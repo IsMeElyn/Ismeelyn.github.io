@@ -1,0 +1,539 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Konverter Basis — Futuristik (Mobile-friendly)</title>
+<style>
+  :root{
+    --bg1:#0f1724;
+    --bg2:#071428;
+    --accent:#7cf7d9;
+    --muted:#9aa6b2;
+    --card:#0b1320;
+    --glass: rgba(255,255,255,0.03);
+    --glass-2: rgba(255,255,255,0.02);
+    --glass-border: rgba(124,247,217,0.08);
+    --glass-hover: rgba(124,247,217,0.03);
+    --mono: "Segoe UI Mono", Consolas, monospace;
+  }
+
+  /* prevent horizontal scroll on small devices */
+  html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden; /* key fix */
+  }
+
+  body{
+    min-height:100vh;
+    font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    color:#d7eaf0;
+    background: radial-gradient(1000px 600px at 10% 10%, rgba(124,247,217,0.03), transparent 5%),
+                radial-gradient(900px 500px at 90% 90%, rgba(124,119,247,0.02), transparent 10%),
+                linear-gradient(180deg,var(--bg1),var(--bg2));
+    -webkit-font-smoothing:antialiased;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:16px; /* reduce default padding for small screens */
+    box-sizing:border-box;
+  }
+
+  .app {
+    width:100%;
+    max-width: calc(100% - 24px); /* don't overflow viewport */
+    border-radius:14px;
+    padding:14px;
+    background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+    box-shadow: 0 10px 40px rgba(2,6,23,0.7);
+    border: 1px solid rgba(255,255,255,0.03);
+    display:grid;
+    grid-template-columns: 1fr minmax(220px, 420px); /* flexible right panel */
+    gap:14px;
+    box-sizing:border-box;
+  }
+
+  @media (max-width:900px){
+    .app { grid-template-columns: 1fr; padding:12px; gap:12px; }
+    .panel-right { order: -1; }
+  }
+
+  header{
+    grid-column:1 / -1;
+    display:flex;
+    align-items:center;
+    gap:12px;
+  }
+  .logo {
+    width:52px; height:52px; border-radius:10px;
+    display:flex; align-items:center; justify-content:center;
+    background: linear-gradient(135deg,#132738, #0b3b4b);
+    box-shadow: 0 6px 18px rgba(7,20,30,0.6), inset 0 1px 0 rgba(255,255,255,0.02);
+    border:1px solid var(--glass-border);
+    font-weight:700; color:var(--accent);
+    font-family: var(--mono);
+    flex-shrink:0;
+  }
+  h1{ font-size:16px; margin:0; letter-spacing:0.2px; color:#e8fbf5;}
+  p.lead{ margin:0; color:var(--muted); font-size:12px;}
+
+  .panel {
+    background: linear-gradient(180deg,var(--card), rgba(255,255,255,0.01));
+    border-radius:12px;
+    padding:12px;
+    border:1px solid var(--glass-border);
+    min-height:220px;
+    box-sizing:border-box;
+  }
+
+  .panel-left { padding:12px; display:flex; flex-direction:column; gap:10px; }
+  .panel-right { padding:12px; display:flex; flex-direction:column; gap:10px; }
+
+  label { font-size:13px; color:var(--muted); display:block; margin-bottom:6px; }
+  input[type="text"], textarea, .select-like {
+    width:100%; padding:10px 12px; border-radius:10px; border:1px solid rgba(255,255,255,0.03);
+    background: linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.005));
+    color:#e6fbf7; box-sizing:border-box; outline:none; font-family:var(--mono);
+  }
+  .row { display:flex; gap:8px; align-items:center; }
+  .row .col { flex:1; }
+
+  .controls { display:flex; gap:8px; align-items:center; flex-wrap:wrap; }
+  .btn {
+    background: linear-gradient(180deg, rgba(124,247,217,0.06), rgba(124,247,217,0.02));
+    border:1px solid rgba(124,247,217,0.06);
+    color:var(--accent); padding:8px 10px; border-radius:10px; cursor:pointer;
+    font-weight:600; font-size:13px;
+  }
+  .btn.ghost { background:transparent; border:1px solid rgba(255,255,255,0.03); color:var(--muted); }
+  .btn.primary { background: linear-gradient(90deg, #00f2c3, #7cf7d9); color:#042426; font-weight:700; }
+
+  /* anchored popover */
+  .anchor {
+    position:relative; display:inline-block;
+  }
+  .popover {
+    position:absolute; top: calc(100% + 6px); left:0; transform-origin: top center;
+    background:var(--glass); backdrop-filter: blur(6px);
+    border:1px solid var(--glass-border); padding:8px; border-radius:10px;
+    box-shadow: 0 10px 30px rgba(3,8,15,0.6);
+    width:220px; max-width:90vw; display:none; z-index:40;
+    transition: transform 220ms cubic-bezier(.2,.9,.25,1), opacity 180ms;
+    opacity:0; transform: translateY(-6px) scale(0.98);
+    overflow:hidden;
+    box-sizing:border-box;
+  }
+  .popover.show { display:block; opacity:1; transform: translateY(0) scale(1); }
+
+  .base-option { display:flex; justify-content:space-between; padding:8px; border-radius:8px; cursor:pointer; color:var(--muted); }
+  .base-option:hover { background:var(--glass-hover); color:var(--accent); }
+
+  /* result area */
+  .result {
+    background: linear-gradient(180deg, rgba(2,6,15,0.7), rgba(8,16,24,0.8));
+    border-radius:10px; padding:10px; font-family:var(--mono); font-size:13px; color:#dffbf3;
+    min-height:160px; overflow:auto; border:1px solid rgba(255,255,255,0.02);
+    word-break: break-word; /* allow wrapping */
+    overflow-wrap: anywhere;
+  }
+
+  .steps { font-family:var(--mono); color:#bff3e8; line-height:1.4; white-space:pre-wrap; font-size:13px; word-break: break-word; overflow-wrap: anywhere; }
+
+  .digits { display:flex; gap:6px; flex-wrap:wrap; margin-top:8px; }
+  .digit-pill { background: rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.02); padding:6px 8px; border-radius:8px; color:var(--muted); font-weight:700; }
+
+  .small { font-size:12px; color:var(--muted); }
+  footer.small { font-size:12px; color:var(--muted); text-align:right; }
+
+  .glow {
+    height:8px; border-radius:999px; background:linear-gradient(90deg, rgba(124,247,217,0.5), rgba(124,119,247,0.3));
+    box-shadow: 0 6px 20px rgba(124,247,217,0.06); opacity:0.9;
+  }
+
+  .hint { color:var(--muted); font-size:12px; }
+  .flex-between { display:flex; justify-content:space-between; align-items:center; gap:12px; }
+
+  /* mobile tweaks */
+  @media (max-width:480px){
+    .logo { width:44px; height:44px; }
+    h1 { font-size:15px; }
+    p.lead { display:none; } /* hide long subtitle on tiny screens */
+    .btn { padding:7px 8px; font-size:12px; }
+    .result { font-size:12px; min-height:120px; }
+    .steps { font-size:12px; }
+  }
+</style>
+</head>
+<body>
+  <div class="app" role="application" aria-label="Konverter Basis Futuristik">
+    <header>
+      <div class="logo">KB</div>
+      <div>
+        <h1>Konverter Basis — Futuristik</h1>
+        <p class="lead">Konversi antar basis dengan perhitungan manual dan animasi langkah demi langkah.</p>
+      </div>
+    </header>
+
+    <section class="panel panel-left" aria-label="Input dan Kontrol">
+      <div>
+        <label>Input (angka atau teks)</label>
+        <input id="inputValue" type="text" placeholder="Contoh: 255 atau Hello" />
+        <div class="hint small">Jika memilih source Text — input diperlakukan sebagai teks UTF-8.</div>
+      </div>
+
+      <div class="row">
+        <div class="col">
+          <label>Source Base</label>
+          <div class="anchor">
+            <button id="srcBtn" class="btn ghost">Pilih Source ▾</button>
+            <div id="srcPop" class="popover" role="menu" aria-hidden="true"></div>
+          </div>
+        </div>
+
+        <div class="col">
+          <label>Target Base</label>
+          <div class="anchor">
+            <button id="tgtBtn" class="btn ghost">Pilih Target ▾</button>
+            <div id="tgtPop" class="popover" role="menu" aria-hidden="true"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="controls" style="margin-top:8px;">
+        <button id="generate" class="btn primary">Generate</button>
+        <button id="swap" class="btn">↔ Swap</button>
+        <button id="clear" class="btn ghost">Clear</button>
+        <div style="flex:1"></div>
+      </div>
+
+      <div style="margin-top:8px;">
+        <label>Preview</label>
+        <div class="result" id="preview" aria-live="polite"></div>
+      </div>
+
+    </section>
+
+    <aside class="panel panel-right" aria-label="Output & Langkah">
+      <div class="flex-between">
+        <div>
+          <label>Hasil</label>
+          <div id="outputValue" class="result" style="min-height:60px; font-size:15px; font-weight:700;"></div>
+        </div>
+      </div>
+
+      <div style="margin-top:10px;">
+        <label>Langkah Perhitungan</label>
+        <div class="result steps" id="stepsArea"></div>
+      </div>
+
+      <div style="margin-top:10px;">
+        <label>Digit (Urut)</label>
+        <div class="digits" id="digitsArea"></div>
+      </div>
+
+      <footer style="margin-top:10px;" class="small">Konversi menggunakan BigInt; pembagian ditampilkan langkah demi langkah.</footer>
+    </aside>
+  </div>
+
+<script>
+/* -- same base list and core logic as sebelumnya, dengan tambahan repositioning popover untuk layar kecil/kanan -- */
+
+const BASES = [
+  { id: 'dec', label: 'Desimal', base: 10, alphabet: '0123456789' },
+  { id: 'oct', label: 'Oktal', base: 8, alphabet: '01234567' },
+  { id: 'bin', label: 'Biner', base: 2, alphabet: '01' },
+  { id: 'vig', label: 'Vigesimal (Base20)', base: 20, alphabet: '0123456789ABCDEFGHIJ' },
+  { id: 'duo', label: 'Duodesimal (Base12)', base: 12, alphabet: '0123456789AB' },
+  { id: 'hex', label: 'Hexadecimal', base: 16, alphabet: '0123456789ABCDEF' },
+  { id: 'b58', label: 'Base58', base: 58, alphabet: '123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz' },
+  { id: 'b64', label: 'Base64', base: 64, alphabet: 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/' },
+  { id: 'text', label: 'Text (UTF-8 bytes)', base: null, alphabet: null }
+];
+
+const srcBtn = document.getElementById('srcBtn');
+const tgtBtn = document.getElementById('tgtBtn');
+const srcPop = document.getElementById('srcPop');
+const tgtPop = document.getElementById('tgtPop');
+const inputValue = document.getElementById('inputValue');
+const preview = document.getElementById('preview');
+const generateBtn = document.getElementById('generate');
+const stepsArea = document.getElementById('stepsArea');
+const digitsArea = document.getElementById('digitsArea');
+const outputValue = document.getElementById('outputValue');
+const swapBtn = document.getElementById('swap');
+const clearBtn = document.getElementById('clear');
+
+let srcSelected = BASES[0];
+let tgtSelected = BASES[2];
+
+function makeOption(base, forWhich){
+  const el = document.createElement('div');
+  el.className = 'base-option';
+  el.tabIndex = 0;
+  el.innerHTML = `<div>${base.label}</div><div class="small">${base.base ? 'base ' + base.base : ''}</div>`;
+  el.addEventListener('click', () => {
+    if(forWhich === 'src') setSource(base);
+    else setTarget(base);
+    closeAllPopovers();
+  });
+  return el;
+}
+BASES.forEach(b => {
+  srcPop.appendChild(makeOption(b, 'src'));
+  tgtPop.appendChild(makeOption(b, 'tgt'));
+});
+
+function togglePopover(pop, btn){
+  const shown = pop.classList.contains('show');
+  closeAllPopovers();
+  if(!shown) {
+    positionPopoverNearButton(pop, btn);
+    pop.classList.add('show');
+    pop.setAttribute('aria-hidden','false');
+  }
+}
+function closeAllPopovers(){
+  document.querySelectorAll('.popover').forEach(p => { p.classList.remove('show'); p.setAttribute('aria-hidden','true'); p.style.left = ''; p.style.right = ''; });
+}
+srcBtn.addEventListener('click', ()=> togglePopover(srcPop, srcBtn));
+tgtBtn.addEventListener('click', ()=> togglePopover(tgtPop, tgtBtn));
+document.addEventListener('click', (e)=> {
+  if(!e.target.closest('.anchor') && !e.target.closest('#srcBtn') && !e.target.closest('#tgtBtn')){
+    closeAllPopovers();
+  }
+});
+
+/* POSITIONING: If popover would overflow right edge, align to right of button */
+function positionPopoverNearButton(pop, btn){
+  // reset
+  pop.style.left = '0';
+  pop.style.right = '';
+  // ensure visible first so getBoundingClientRect works
+  pop.style.display = 'block';
+  pop.style.visibility = 'hidden';
+  pop.classList.add('show-temp'); // temporary
+  requestAnimationFrame(()=>{
+    pop.classList.remove('show-temp');
+    pop.style.display = '';
+    pop.style.visibility = '';
+    const popRect = pop.getBoundingClientRect();
+    const btnRect = btn.getBoundingClientRect();
+    const vw = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0);
+    // default place: left aligned with button
+    const leftPos = btnRect.left;
+    // if popover would overflow to the right, align it to the button's right edge (set right:0 relative to button)
+    if(leftPos + popRect.width > vw - 8){
+      // align to right
+      pop.style.left = 'auto';
+      pop.style.right = '0';
+      // ensure popover won't be wider than viewport
+      pop.style.maxWidth = '90vw';
+    } else {
+      pop.style.left = '0';
+      pop.style.right = '';
+      pop.style.maxWidth = '90vw';
+    }
+  });
+}
+
+/* UI set */
+function setSource(b){
+  srcSelected = b;
+  srcBtn.textContent = `Source: ${b.label} ${b.base ? ' (base '+b.base+')' : ''} ▾`;
+  preview.textContent = `Mode source: ${b.label}`;
+}
+function setTarget(b){
+  tgtSelected = b;
+  tgtBtn.textContent = `Target: ${b.label} ${b.base ? ' (base '+b.base+')' : ''} ▾`;
+}
+setSource(srcSelected);
+setTarget(tgtSelected);
+
+/* Utilities */
+function makeMap(alphabet){
+  const m = new Map();
+  for(let i=0;i<alphabet.length;i++) m.set(alphabet[i], BigInt(i));
+  return m;
+}
+function utf8ToBytes(str){ return new TextEncoder().encode(str); }
+function bytesToBigInt(bytes){
+  let n = 0n;
+  for(const b of bytes) n = (n << 8n) + BigInt(b);
+  return n;
+}
+function bigIntToBytes(n){
+  if(n === 0n) return new Uint8Array([0]);
+  let bytes = [];
+  while(n > 0n){
+    bytes.push(Number(n & 0xFFn));
+    n >>= 8n;
+  }
+  bytes.reverse();
+  return new Uint8Array(bytes);
+}
+
+function parseInputToBigInt(str, source){
+  if(source.id === 'text'){
+    const bytes = utf8ToBytes(str);
+    return bytesToBigInt(bytes);
+  }
+  if(source.id === 'b64'){
+    const alph = source.alphabet;
+    const m = makeMap(alph);
+    let n = 0n;
+    const s = str.replace(/=+$/,'');
+    for(let i=0;i<s.length;i++){
+      const ch = s[i];
+      if(!m.has(ch)) throw new Error('Karakter tidak valid untuk Base64: ' + ch);
+      n = n * 64n + m.get(ch);
+    }
+    return n;
+  }
+  if(source.id === 'b58'){
+    const alph = source.alphabet;
+    const m = makeMap(alph);
+    let n = 0n;
+    for(let i=0;i<str.length;i++){
+      const ch = str[i];
+      if(!m.has(ch)) throw new Error('Karakter tidak valid untuk Base58: ' + ch);
+      n = n * 58n + m.get(ch);
+    }
+    return n;
+  }
+  const alph = source.alphabet.toUpperCase();
+  const m = makeMap(alph);
+  let s = str.trim().toUpperCase();
+  if(s.startsWith('0X')) s = s.slice(2);
+  let n = 0n;
+  for(let i=0;i<s.length;i++){
+    const ch = s[i];
+    if(!m.has(ch)) throw new Error('Karakter tidak valid untuk ' + source.label + ': ' + ch);
+    n = n * BigInt(source.base) + m.get(ch);
+  }
+  return n;
+}
+
+function stepGenerator(n, target){
+  const base = BigInt(target.base);
+  const alph = target.alphabet;
+  const steps = [];
+  if(n === 0n){
+    steps.push({ n: 0n, q: 0n, r: 0n, digit: '0' });
+    return steps;
+  }
+  let iter = 0;
+  while(n > 0n){
+    const q = n / base;
+    const r = n % base;
+    const ch = alph[Number(r)] ?? String(r);
+    steps.push({ n, q, r, digit: ch });
+    n = q;
+    iter++;
+    if(iter > 5000) break;
+  }
+  return steps;
+}
+
+/* Animation */
+async function animateConversion(inputStr){
+  stepsArea.textContent = '';
+  digitsArea.innerHTML = '';
+  outputValue.textContent = '';
+  preview.textContent = 'Memulai perhitungan...';
+
+  let bigN;
+  try {
+    bigN = parseInputToBigInt(inputStr, srcSelected);
+  } catch(e){
+    preview.textContent = 'Error parse: ' + e.message;
+    return;
+  }
+
+  preview.textContent = `Nilai besar (desimal/internal): ${bigN.toString()}`;
+
+  if(tgtSelected.id === 'text' && bigN === 0n){
+    outputValue.textContent = '';
+    stepsArea.textContent = 'Tidak ada data untuk decode';
+    return;
+  }
+
+  const stepList = stepGenerator(bigN, tgtSelected);
+  if(stepList.length === 0){
+    stepsArea.textContent = 'Tidak ada langkah (mungkin input = 0).';
+    outputValue.textContent = '0';
+    return;
+  }
+
+  const delayPerStep = Math.max(60, 360 - Math.min(320, stepList.length * 6));
+  for(let i=0;i<stepList.length;i++){
+    const st = stepList[i];
+    appendStep(st);
+    await new Promise(res => setTimeout(res, delayPerStep));
+  }
+
+  const digits = stepList.map(s => s.digit).reverse();
+  const final = digits.join('');
+  outputValue.textContent = final;
+  preview.textContent = `Selesai — ${inputStr} (${srcSelected.label}) → ${final} (${tgtSelected.label})`;
+}
+
+function appendStep(info){
+  const line = document.createElement('div');
+  // produce a compact line that still wraps on small screens
+  line.textContent = `${info.n.toString()} ÷ ${tgtSelected.base} = ${info.q.toString()} -> ${info.r.toString()}  => digit "${info.digit}"`;
+  line.style.opacity = '0';
+  line.style.transform = 'translateY(6px)';
+  stepsArea.appendChild(line);
+  requestAnimationFrame(()=> {
+    line.style.transition = 'all 200ms ease';
+    line.style.opacity = '1';
+    line.style.transform = 'translateY(0px)';
+  });
+  const dp = document.createElement('div');
+  dp.className = 'digit-pill';
+  dp.textContent = info.digit;
+  dp.style.opacity = '0';
+  dp.style.transform = 'translateY(6px)';
+  digitsArea.prepend(dp);
+  requestAnimationFrame(()=> {
+    dp.style.transition = 'all 200ms ease';
+    dp.style.opacity = '1';
+    dp.style.transform = 'translateY(0px)';
+  });
+}
+
+/* Buttons */
+generateBtn.addEventListener('click', async () => {
+  const val = inputValue.value.trim();
+  if(!val){
+    preview.textContent = 'Masukkan nilai atau teks di bagian Input.';
+    return;
+  }
+  stepsArea.textContent = '';
+  digitsArea.innerHTML = '';
+  outputValue.textContent = '';
+  await animateConversion(val);
+});
+
+swapBtn.addEventListener('click', ()=>{
+  const oldSrc = srcSelected;
+  setSource(tgtSelected);
+  setTarget(oldSrc);
+});
+
+clearBtn.addEventListener('click', ()=>{
+  inputValue.value = '';
+  preview.textContent = '';
+  stepsArea.textContent = '';
+  digitsArea.innerHTML = '';
+  outputValue.textContent = '';
+});
+
+inputValue.addEventListener('keydown', (e)=>{
+  if(e.key === 'Enter') generateBtn.click();
+});
+</script>
+</body>
+</html>
