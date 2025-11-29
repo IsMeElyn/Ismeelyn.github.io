@@ -1,0 +1,26 @@
+{
+  "name": "Elyn ☑️",
+  "bio": "„Ngl bruh I’m dead rn 😭🥀 2 days grindin’ web design 4hrs daily, brain fried af ✌️ finally done tho'' ",
+  "hobbies": [
+    { "name": "Coding", "color": "#3498db" },
+    { "name": "Gaming", "color": "#e74c3c" },
+    { "name": "Photography", "color": "#2ecc71" },
+    { "name": "Music", "color": "#9b59b6" },
+    { "name": "Mukbang", "color": "#f39c12" }
+  ],
+  "socialLinks": {
+    "whatsapp": "https://wa.me/1234567890",
+    "telegram": "https://t.me/username",
+    "github": "https://github.com/username",
+    "discord": "https://discord.gg/invitecode"
+  },
+  "redirects": [
+    { "title": "Script Download", "logo": "fas fa-download", "subtitle": "MediaFire", "url": "https://mediafire.com" },
+    { "title": "Onlyfans", "logo": "fas fa-briefcase", "subtitle": "Lihat karya terbaru", "url": "https://portfolio.example.com" },
+    { "title": "Blog", "logo": "fas fa-blog", "subtitle": "Artikel terbaru", "url": "https://blog.example.com" }
+  ],
+  "music": [
+    "./assets/music/VISION - Slowed - UdieNnx, HXVSAGE.webm",
+    "./assets/music/STRUCT - Tiktok Version.webm"
+  ]
+}
