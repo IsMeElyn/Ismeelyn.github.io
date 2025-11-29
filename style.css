@@ -23,48 +23,40 @@ body {
     align-items: center;
     min-height: 100vh;
     padding: 20px;
-}
-
-body::before {
-    content: "";
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    background: url('./assets/images/background.webp') no-repeat center center;
+    background: url('./assets/images/background.webp') no-repeat center center fixed;
     background-size: cover;
-    z-index: -1;
 }
 
 .vcard-container {
     width: 100%;
     max-width: 400px;
     position: relative;
-    overflow: visible;
+    overflow: hidden;
     border-radius: 20px;
-    background: rgba(0, 0, 0, 0);
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    background: rgba(0, 0, 0, 0.6);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
 }
 
 .background-section {
     width: 100%;
+    height: 180px;
     overflow: hidden;
-    display: block;
-    margin-top: 190px;
+    position: relative;
 }
 
 .banner-image {
     width: 100%;
-    height: auto;
+    height: 100%;
     display: block;
-    object-fit: contain;
+    object-fit: cover;
     object-position: center;
 }
 
 .profile-image-container {
     position: absolute;
-    top: 325px;
+    top: 130px;
     left: 50%;
     transform: translateX(-50%);
     width: 100px;
@@ -73,9 +65,11 @@ body::before {
     display: flex;
     justify-content: center;
     align-items: center;
-    border: 4px solid #121212;
+    border: 4px solid rgba(255, 255, 255, 0.8);
     overflow: hidden;
     z-index: 2;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    background: rgba(0, 0, 0, 0.3);
 }
 
 .profile-image {
@@ -90,28 +84,28 @@ body::before {
 }
 
 .content-section {
-    background-color: rgba(0, 0, 0, 0.25);
-    padding: 70px 20px 20px;
-    backdrop-filter: blur(6px);
+    padding: 60px 25px 25px;
+    margin-top: 0;
 }
 
 .name {
     font-family: 'super-adorable', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     font-size: 28px;
     text-align: center;
-    margin-bottom: 10px;
+    margin-bottom: 15px;
     color: #fff;
-    margin-top: -14px;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 }
 
 .bio {
     text-align: center;
     margin-bottom: 25px;
     font-size: 15px;
-    line-height: 1.5;
+    line-height: 1.6;
     max-height: 100px;
     overflow-y: auto;
     padding: 0 5px;
+    color: rgba(255, 255, 255, 0.9);
 }
 
 .hobbies-section {
@@ -119,10 +113,11 @@ body::before {
 }
 
 .hobbies-title {
-	font-family: 'fot-yuruka-std', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: 'fot-yuruka-std', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     font-size: 16px;
-    margin-bottom: 10px;
-    color: #aaa;
+    margin-bottom: 12px;
+    color: rgba(255, 255, 255, 0.8);
+    font-weight: 600;
 }
 
 .hobbies-container {
@@ -132,19 +127,24 @@ body::before {
 }
 
 .hobby-tag {
-    background-color: #333;
-    padding: 5px 12px;
+    background-color: rgba(255, 255, 255, 0.15);
+    padding: 6px 14px;
     border-radius: 20px;
     font-size: 13px;
     display: flex;
     align-items: center;
+    transition: background-color 0.3s;
+}
+
+.hobby-tag:hover {
+    background-color: rgba(255, 255, 255, 0.25);
 }
 
 .hobby-color {
     width: 10px;
     height: 10px;
     border-radius: 50%;
-    margin-right: 5px;
+    margin-right: 6px;
 }
 
 .social-section {
@@ -152,21 +152,22 @@ body::before {
 }
 
 .social-title {
-	font-family: 'fot-yuruka-std', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: 'fot-yuruka-std', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     font-size: 16px;
     margin-bottom: 15px;
-    color: #aaa;
+    color: rgba(255, 255, 255, 0.8);
+    font-weight: 600;
 }
 
 .social-buttons {
     display: flex;
-    gap: 5px;
+    gap: 10px;
+    justify-content: center;
 }
 
 .social-btn {
-        width: 35px;
-        height: 35px;
-        font-size: 20px;
+    width: 40px;
+    height: 40px;
     border-radius: 50%;
     display: flex;
     justify-content: center;
@@ -174,18 +175,20 @@ body::before {
     overflow: hidden;
     cursor: pointer;
     transition: transform 0.3s, box-shadow 0.3s;
-    background-color: transparent;
+    background-color: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 .social-btn img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
+    width: 60%;
+    height: 60%;
+    object-fit: contain;
 }
 
 .social-btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    background-color: rgba(255, 255, 255, 0.2);
 }
 
 .redirect-section {
@@ -193,10 +196,11 @@ body::before {
 }
 
 .redirect-title {
-	font-family: 'fot-yuruka-std', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: 'fot-yuruka-std', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     font-size: 16px;
     margin-bottom: 15px;
-    color: #aaa;
+    color: rgba(255, 255, 255, 0.8);
+    font-weight: 600;
 }
 
 .redirect-buttons {
@@ -209,30 +213,33 @@ body::before {
     display: flex;
     align-items: center;
     background-color: rgba(255, 255, 255, 0.1);
-    border-radius: 10px;
-    padding: 12px 15px;
-    transition: background-color 0.3s;
+    border-radius: 12px;
+    padding: 14px 16px;
+    transition: all 0.3s;
     cursor: pointer;
+    border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .redirect-btn:hover {
     background-color: rgba(255, 255, 255, 0.15);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
 }
 
 .redirect-logo {
-    width: 30px;
-    height: 30px;
+    width: 32px;
+    height: 32px;
     margin-right: 12px;
-    border-radius: 6px;
+    border-radius: 8px;
     display: flex;
     justify-content: center;
     align-items: center;
     font-size: 16px;
-    background-color: rgba(255, 255, 255, 0.1);
+    background-color: rgba(255, 255, 255, 0.15);
 }
 
 .redirect-text {
-	font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     flex: 1;
 }
 
@@ -243,7 +250,7 @@ body::before {
 
 .redirect-sub {
     font-size: 12px;
-    color: #8f8f8f;
+    color: rgba(255, 255, 255, 0.7);
     margin-top: 2px;
 }
 
@@ -251,8 +258,9 @@ footer {
     text-align: center;
     padding: 15px;
     font-size: 14px;
-    color: #fff;
+    color: rgba(255, 255, 255, 0.7);
     border-top: 1px solid rgba(255, 255, 255, 0.1);
+    background-color: rgba(0, 0, 0, 0.2);
 }
 
 .emoji-verif {
@@ -266,32 +274,71 @@ footer {
 }
 
 .music-btn {
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-  z-index: 9999;
-  display: flex;
-  flex-direction: column; 
-  align-items: center;   
-  justify-content: center;
-  background-color: rgba(255, 255, 255, 0.05);
-  border-radius: 10px;
-  padding: 12px 15px;
-  gap: 15px;
-  cursor: pointer;
-  user-select: none;
-  transition: background-color 0.3s;
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    padding: 12px 15px;
+    gap: 12px;
+    cursor: pointer;
+    user-select: none;
+    transition: all 0.3s;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
 }
 
 .music-btn:hover {
-  background-color: rgba(255, 255, 255, 0.1);
+    background-color: rgba(255, 255, 255, 0.15);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
 }
 
 .music-btn i {
-  font-size: 20px;
-  transition: transform 0.2s;
+    font-size: 20px;
+    transition: transform 0.2s;
+    color: rgba(255, 255, 255, 0.9);
 }
 
 .music-btn i:hover {
-  transform: scale(1.2);
+    transform: scale(1.2);
+}
+
+/* Animasi untuk transisi halus */
+.vcard-container {
+    animation: fadeIn 0.8s ease-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Responsif untuk perangkat mobile */
+@media (max-width: 480px) {
+    .vcard-container {
+        max-width: 350px;
+    }
+    
+    .content-section {
+        padding: 60px 20px 20px;
+    }
+    
+    .profile-image-container {
+        width: 90px;
+        height: 90px;
+        top: 125px;
+    }
 }
