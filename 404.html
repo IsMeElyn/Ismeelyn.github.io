@@ -1,1 +1,220 @@
-Page Not Found!
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Halaman Tidak Ditemukan - 404</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @font-face {
+            font-family: 'super-adorable';
+            src: url('https://fonts.cdnfonts.com/css/cute-font') format('truetype');
+        }
+
+        @font-face {
+            font-family: 'fot-yuruka-std';
+            src: url('https://fonts.cdnfonts.com/css/japanese-style') format('truetype');
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+        }
+
+        .error-container {
+            width: 100%;
+            max-width: 500px;
+            position: relative;
+            overflow: hidden;
+            border-radius: 20px;
+            background: rgba(0, 0, 0, 0.6);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            text-align: center;
+            padding: 40px 30px;
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .error-icon {
+            font-size: 100px;
+            color: #ff6b6b;
+            margin-bottom: 20px;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        .error-title {
+            font-family: 'super-adorable', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-size: 48px;
+            margin-bottom: 15px;
+            color: #fff;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .error-message {
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 18px;
+            line-height: 1.6;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .error-details {
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 30px;
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.7);
+            text-align: left;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .action-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 12px 20px;
+            transition: all 0.3s;
+            cursor: pointer;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            text-decoration: none;
+            color: white;
+            font-weight: 500;
+        }
+
+        .action-btn:hover {
+            background-color: rgba(255, 255, 255, 0.15);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .action-btn i { margin-right: 8px; }
+
+        .social-section { margin-bottom: 25px; }
+
+        .social-title {
+            font-family: 'fot-yuruka-std', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-size: 16px;
+            margin-bottom: 15px;
+            color: rgba(255, 255, 255, 0.8);
+            font-weight: 600;
+        }
+
+        .social-buttons {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+        }
+
+        .social-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+            background-color: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .social-btn i {
+            font-size: 18px;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .social-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+
+        @media (max-width: 480px) {
+            .error-container { max-width: 350px; padding: 30px 20px; }
+            .error-title { font-size: 36px; }
+            .error-message { font-size: 16px; }
+            .action-buttons { flex-direction: column; }
+        }
+    </style>
+</head>
+<body>
+    <div class="error-container">
+        <div class="error-icon">
+            <i class="fas fa-exclamation-triangle"></i>
+        </div>
+        <h1 class="error-title">404</h1>
+        <p class="error-message">Maaf, halaman yang Anda cari tidak ditemukan.</p>
+        
+        <div class="error-details">
+            <p>Kemungkinan penyebab:</p>
+            <ul style="margin-left: 20px; margin-top: 10px;">
+                <li>URL yang dimasukkan salah</li>
+                <li>Halaman telah dipindahkan atau dihapus</li>
+                <li>Terjadi kesalahan sementara</li>
+            </ul>
+        </div>
+        
+        <div class="action-buttons">
+            <a href="#" class="action-btn"><i class="fas fa-home"></i> Kembali ke Beranda</a>
+            <a href="#" class="action-btn"><i class="fas fa-history"></i> Muat Ulang</a>
+        </div>
+        
+        <div class="social-section">
+            <div class="social-title">Ikuti Kami</div>
+            <div class="social-buttons">
+                <div class="social-btn"><i class="fab fa-instagram"></i></div>
+                <div class="social-btn"><i class="fab fa-twitter"></i></div>
+                <div class="social-btn"><i class="fab fa-facebook-f"></i></div>
+                <div class="social-btn"><i class="fab fa-youtube"></i></div>
+            </div>
+        </div>
+        
+        <footer>elyn.my.id © 2025</footer>
+    </div>
+
+    <script>
+        // Fungsi untuk tombol kembali ke beranda
+        document.querySelectorAll('.action-btn')[0].addEventListener('click', function(e) {
+            e.preventDefault();
+            alert('Mengarahkan ke beranda...');
+        });
+        
+        // Fungsi untuk tombol muat ulang
+        document.querySelectorAll('.action-btn')[1].addEventListener('click', function(e) {
+            e.preventDefault();
+            location.reload();
+        });
+    </script>
+</body>
+</html>
