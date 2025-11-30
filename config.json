@@ -4,7 +4,7 @@
   "hobbies": [
     { "name": "Coding", "color": "#3498db" },
     { "name": "Gaming", "color": "#e74c3c" },
-    { "name": "Photography", "color": "#2ecc71" },
+    { "name": "Crossdress", "color": "#2ecc71" },
     { "name": "Music", "color": "#9b59b6" },
     { "name": "Mukbang", "color": "#f39c12" }
   ],
@@ -23,4 +23,5 @@
     "./assets/music/VISION - Slowed - UdieNnx, HXVSAGE.webm",
     "./assets/music/STRUCT - Tiktok Version.webm"
   ]
+
 }
