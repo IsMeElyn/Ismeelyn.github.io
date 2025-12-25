@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Trinity SMP — Minecraft Server (Concept Overview)</title>
+  <style>
+    :root {
+      --primary-dark: #0f172a;
+      --secondary-dark: #1e293b;
+      --accent-blue: #38bdf8;
+      --accent-green: #22c55e;
+      --text-light: #f8fafc;
+      --text-muted: #cbd5e1;
+      --danger-red: #ef4444;
+      --warning-orange: #f59e0b;
+      --success-green: #10b981;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      line-height: 1.6;
+      background: linear-gradient(135deg, var(--primary-dark) 0%, #1a1f35 100%);
+      color: var(--text-muted);
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 40px;
+      padding-bottom: 30px;
+      border-bottom: 2px solid var(--accent-blue);
+      background: rgba(30, 41, 59, 0.7);
+      border-radius: 15px;
+      padding: 30px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    }
+
+    h1 {
+      color: var(--text-light);
+      font-size: 2.8rem;
+      margin-bottom: 10px;
+      background: linear-gradient(90deg, var(--accent-blue), #60a5fa);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .subtitle {
+      color: var(--accent-blue);
+      font-size: 1.3rem;
+      font-weight: 400;
+      margin-bottom: 20px;
+    }
+
+    .tagline {
+      font-size: 1.1rem;
+      color: var(--text-muted);
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 15px;
+      background: rgba(15, 23, 42, 0.8);
+      border-radius: 10px;
+      border-left: 4px solid var(--accent-green);
+    }
+
+    .main-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+      gap: 25px;
+      margin-top: 30px;
+    }
+
+    .card {
+      background: rgba(30, 41, 59, 0.8);
+      border-radius: 12px;
+      padding: 25px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      border: 1px solid rgba(56, 189, 248, 0.1);
+    }
+
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+      border-color: rgba(56, 189, 248, 0.3);
+    }
+
+    h2 {
+      color: var(--text-light);
+      font-size: 1.8rem;
+      margin-bottom: 20px;
+      padding-bottom: 10px;
+      border-bottom: 2px solid var(--accent-blue);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    h2::before {
+      content: "◆";
+      color: var(--accent-blue);
+    }
+
+    h3 {
+      color: var(--text-light);
+      font-size: 1.3rem;
+      margin: 20px 0 15px;
+      padding-left: 10px;
+      border-left: 3px solid var(--accent-green);
+    }
+
+    ul {
+      list-style: none;
+      padding-left: 0;
+    }
+
+    li {
+      padding: 8px 0;
+      padding-left: 25px;
+      position: relative;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    li:before {
+      content: "✓";
+      position: absolute;
+      left: 0;
+      color: var(--accent-blue);
+      font-weight: bold;
+    }
+
+    .highlight {
+      color: var(--accent-blue);
+      font-weight: 600;
+      background: rgba(56, 189, 248, 0.1);
+      padding: 2px 6px;
+      border-radius: 4px;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      margin-left: 10px;
+    }
+
+    .badge-blue {
+      background: rgba(56, 189, 248, 0.2);
+      color: var(--accent-blue);
+      border: 1px solid var(--accent-blue);
+    }
+
+    .badge-green {
+      background: rgba(34, 197, 94, 0.2);
+      color: var(--accent-green);
+      border: 1px solid var(--accent-green);
+    }
+
+    .badge-red {
+      background: rgba(239, 68, 68, 0.2);
+      color: var(--danger-red);
+      border: 1px solid var(--danger-red);
+    }
+
+    .note {
+      background: rgba(34, 197, 94, 0.1);
+      border-left: 4px solid var(--accent-green);
+      padding: 20px;
+      margin-top: 20px;
+      border-radius: 0 8px 8px 0;
+      font-size: 0.95rem;
+      line-height: 1.7;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 15px;
+      margin: 15px 0;
+    }
+
+    .effect-list {
+      background: rgba(15, 23, 42, 0.5);
+      padding: 15px;
+      border-radius: 8px;
+      margin: 10px 0;
+    }
+
+    .stat-box {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(56, 189, 248, 0.1);
+      padding: 15px;
+      border-radius: 8px;
+      margin: 10px 0;
+      border: 1px solid rgba(56, 189, 248, 0.3);
+    }
+
+    .stat-label {
+      color: var(--text-muted);
+    }
+
+    .stat-value {
+      color: var(--accent-blue);
+      font-weight: bold;
+      font-size: 1.2rem;
+    }
+
+    .warning {
+      background: rgba(245, 158, 11, 0.1);
+      border-left: 4px solid var(--warning-orange);
+      padding: 15px;
+      margin: 15px 0;
+      border-radius: 0 8px 8px 0;
+    }
+
+    footer {
+      text-align: center;
+      margin-top: 50px;
+      padding: 30px;
+      border-top: 1px solid rgba(56, 189, 248, 0.2);
+      color: var(--text-muted);
+      font-size: 0.9rem;
+    }
+
+    @media (max-width: 768px) {
+      .main-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      h1 {
+        font-size: 2rem;
+      }
+      
+      .grid-2 {
+        grid-template-columns: 1fr;
+      }
+      
+      .container {
+        padding: 10px;
+      }
+    }
+
+    .section-icon {
+      font-size: 1.5rem;
+      margin-right: 10px;
+    }
+
+    .color-indicator {
+      display: inline-block;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      margin-right: 8px;
+    }
+
+.effect-button {
+  color: #0b3d91;
+  text-decoration: underline;
+  font-weight: 500;
+  cursor: default;
+}
+
+    .yellow { background-color: #fbbf24; }
+    .orange { background-color: #f97316; }
+    .red { background-color: #ef4444; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>Trinity SMP</h1>
+      <div class="subtitle">Three Effects. Power Is Not Free.</div>
+      <div class="tagline">
+        A season-based competitive Minecraft server designed for content creators, 
+        featuring a modified Hardcore experience with strategic depth and high-risk gameplay.
+      </div>
+    </header>
+
+    <div class="main-grid">
+      <div class="card">
+        <h2>🎯 Project Overview</h2>
+        <p>
+          Trinity SMP is a custom-designed Minecraft series server intended for
+          content creators. The core concept is a <span class="highlight">modified Hardcore experience</span>,
+          offering high-risk gameplay with strategic depth, avoiding the repetitive nature
+          of vanilla Hardcore.
+        </p>
+      </div>
+
+      <div class="card">
+        <h2>⚡ Core Gameplay</h2>
+        <ul>
+          <li>Each player receives <strong>one unique random effect</strong> at season start</li>
+          <li>Effects are distributed <strong>only once per season</strong></li>
+          <li>No reroll or replacement during active season</li>
+        </ul>
+        
+        <div class="grid-2">
+          <div class="effect-list">
+            <h3>Available Effects</h3>
+            <ul>
+<li>Water Breathing I</li>
+<li>Resistance I</li>
+<li>Absorption I</li>
+<li>Saturation I</li>
+<li>Night Vision I</li>
+<li>Strength I</li>
+<li>Jump Boost I</li>
+<li>Speed I</li>
+<li>Fire Resistance I</li>
+<li>Water Breathing I</li>
+<li>Invisibility I</li>
+<li>Slow Falling I</li>
+<li>Hero Village I</li>
+<li>Blindness I</li>
+<li>Haste I</li>
+<li>Dolphins Grace I</li>
+<li>Conduit Power I</li>
+<li>Health Boost I</li>
+<li>Resistance I</li>
+<li>Absorption I</li>
+<li>Saturation I</li>
+<li>Slowness I</li>
+<li>Instant Damage I</li>
+<li>Poison I</li>
+<li>Weakness I</li>
+<li>Wither I</li>
+<li>Infested I</li>
+<li>Weaving I</li>
+<li>Oozing I</li>
+<li>Wind Charged I</li>
+<li>Darkness I</li>
+<li>Hunger I</li>
+<li>Mining Fatigue I</li>
+<li>Nausea I</li>
+<li>Levitation I</li>
+            </ul>
+          </div>
+          
+          <div class="effect-list">
+            <h3>Effects Not Available </h3>
+            <ul>
+<li><strike>Regeneration</strike></li>
+<li><strike>Instant Health</strike></li>
+<li><strike>Turtle Master</strike></li>
+<li><strike>Bad Omen</strike></li>
+<li><strike>Trial Omen</strike></li>
+<li><strike>Raid Omen</strike></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>🐢 Emergency System</h2>
+        <p>When player health drops critically low:</p>
+        
+        <div class="stat-box">
+          <div class="stat-label">Activation Threshold</div>
+          <div class="stat-value">3 Hearts</div>
+        </div>
+        
+        <div class="stat-box">
+          <div class="stat-label">Turtle Master Duration</div>
+          <div class="stat-value">6 Seconds</div>
+        </div>
+        
+        <div class="stat-box">
+          <div class="stat-label">Cooldown Period</div>
+          <div class="stat-value">2 Hours</div>
+        </div>
+        
+        <p class="warning">Once triggered and escaped, cannot activate again until cooldown ends.</p>
+      </div>
+
+      <div class="card">
+        <h2>⚔️ PvP & Effect Transfer</h2>
+        <ul>
+          <li>Killing another player allows:
+            <ul>
+              <li>Stealing the target's effect, OR</li>
+              <li>Receiving effect voluntarily without killing</li>
+            </ul>
+          </li>
+          <li><span class="highlight">Maximum active effects per player: 3</span></li>
+        </ul>
+        
+        <h3>Effect Loss Conditions</h3>
+        <ul>
+          <li>Environmental death (lava, fall, etc.)</li>
+          <li>Being killed by another player</li>
+          <li>Voluntary effect transfer</li>
+        </ul>
+      </div>
+
+<div class="card">    
+  <h2>⚔️ Active Effect Mechanics</h2>    
+  <ul>    
+    <li>Effects that require a triggering action (for example: attacking)</li>    
+    <li>Each attack has <span class="highlight">1%–2.5% chance</span> to apply an active effect</li>    
+    <li>If triggered:    
+      <ul>    
+        <li>Effect Level: I</li>    
+        <li>Duration: 3 seconds</li>    
+      </ul>    
+    </li>    
+  </ul>    
+  <p>Common active examples: Wither I, Poison I, Hunger I, Slowness I</p>    
+</div>    
+
+<div class="card">    
+  <h2>✨ Passive Effect Rules</h2>    
+  <ul>    
+    <li>Activate immediately on acquisition</li>    
+    <li>Effect Level: I</li>    
+    <li>Duration: <span class="highlight">Infinite</span></li>    
+  </ul>    
+      
+  <h3>Effect Balancing</h3>    
+  <ul>    
+    <li>Higher-level effects from items are ignored if a lower infinite passive effect exists</li>    
+    <li>Maximum effect level remains capped</li>    
+    <li>Applies to all similar overlapping effects</li>    
+  </ul>    
+</div>
+
+<div class="card">  
+  <h2>🩸 Custom Hardcore Mode</h2>  
+  <ul>  
+    <li>Enhanced Hardcore experience with unique mechanics</li>  
+    <li>Custom resource pack for immersive health and status visuals</li>  
+    <li>Death does not result in permanent elimination</li>  
+<li data-highlight="true">Respawn delay: 3 hours</li>
+    <li>Designed to challenge players while allowing strategic recovery</li>
+  </ul>  
+</div>
+
+      <div class="card">
+        <h2>🖥️ Server Configuration</h2>
+        <ul>
+          <li>Core mods: <span class="badge badge-blue">2 Total</span></li>
+          <li>Additional plugins: <span class="badge badge-red">None (Except Voice Chat)</span></li>
+          <li>Server RAM: <span class="badge badge-green">16 GB</span></li>
+          <li>Gameplay mode: <span class="badge badge-red">Anarchy</span></li>
+        </ul>
+        
+        <h3>Community Rule</h3>
+        <p>Players may not watch videos or live streams from other participating creators.</p>
+      </div>
+
+      <div class="card">
+        <h2>📦 Vanilla Items Enabled</h2>
+        <div class="grid-2">
+          <div>
+            <ul>
+              <li>Elytra <span class="badge badge-blue">Flight</span></li>
+              <li>Ender Pearl <span class="badge badge-green">Teleport</span></li>
+              <li>Totem of Undying <span class="badge badge-red">Survival</span></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>📅 Season System</h2>
+        <ul>
+          <li>Effects distributed once at season start</li>
+          <li>Mid-season joins receive no effects</li>
+          <li>New effects appear only in next season</li>
+        </ul>
+        
+        <h3>World Border Expansion</h3>
+        <div class="grid-2">
+          <div class="stat-box">
+            <div class="stat-label">Season Start</div>
+            <div class="stat-value">5,000 × 5,000</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-label">Mid-season</div>
+            <div class="stat-value">7,000 × 7,000</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-label">End-season</div>
+            <div class="stat-value">9,000 × 9,000</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>💰 Donation System</h2>
+        <ul>
+          <li>Players may donate any amount, anytime</li>
+          <li>First donation of <span class="highlight">$25</span> per season grants one random effect</li>
+          <li>Additional donations are support-only (no extra effects)</li>
+        </ul>
+        
+        <div class="note">
+          <strong>Note:</strong> Server is fully playable without donating. Donations fund server uptime
+          and future seasons. Donors receive a one-time random effect identical to
+          standard season effects.
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>🎨 Effect Visibility</h2>
+        <ul>
+          <li><span class="color-indicator yellow"></span> 0–1 effect: Yellow indicator</li>
+          <li><span class="color-indicator orange"></span> 2 effects: Orange indicator</li>
+          <li><span class="color-indicator red"></span> 3 effects: Red indicator</li>
+          <li>Effects can be stored as inventory items</li>
+          <li>Strategic effect removal before logout allowed</li>
+        </ul>
+        
+        <h3>Anti-Instant Abuse</h3>
+        <ul>
+          <li>Effect items cannot be activated immediately after joining</li>
+          <li>Activation delay: 5 minutes per item</li>
+          <li>Removing active effects has 5-minute cooldown</li>
+          <li>Re-equipping effects has 1-minute delay</li>
+        </ul>
+      </div>
+    </div>
+
+    <footer>
+      <p>Trinity SMP — A Competitive Minecraft Experience for Content Creators</p>
+      <p>Concept Document v2.6 | Last Updated: December 2025 | By Roffi</p>
+    </footer>
+  </div>
+</body>
+</html>
